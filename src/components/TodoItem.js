@@ -34,7 +34,10 @@ export default function TodoItem({task}) {
     }
 
     return (
-        <Paper style={{ margin: '1rem 0', cursor: 'pointer' }}>
+        <Paper elevation={3}
+               variant={task.completed ? 'outlined' : 'elevation'}
+               style={{ margin: '0.5rem 0', cursor: 'pointer' }}
+        >
             <ListItem onClick={toggleTaskResolved}
                       secondaryAction={
                           <IconButton edge="end" aria-label="delete" onClick={toggleMenu}>

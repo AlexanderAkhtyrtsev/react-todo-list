@@ -1,25 +1,47 @@
 import MoreVertIcon from '@mui/icons-material/MoreVert';
-import {useState} from 'react';
+import {useEffect, useState} from 'react';
 import {ListItemIcon, Checkbox, IconButton, ListItem, ListItemText, Menu, MenuItem} from '@mui/material';
+import {useDispatch} from 'react-redux';
+import {removeTask, toggleTask} from '../store/todoSlice';
 
-export default function TodoItem({title}) {
+export default function TodoItem({task}) {
     const [anchorEl, setAnchorEl] = useState(null);
-    const open = Boolean(anchorEl);
+    const [open, setOpen] = useState(false);
+    const dispatch = useDispatch();
 
-    const toggleMenu = (e) => { setAnchorEl(e.currentTarget); }
+    const toggleMenu = (e) => {
+        e.stopPropagation();
+        setAnchorEl(e.currentTarget);
+    }
+
+    const toggleTaskResolved = () => {
+        if (open) {
+            setOpen(false)
+            setAnchorEl(null);
+            return;
+        }
+
+        dispatch(toggleTask(task.id))
+    }
+
+    useEffect(() => {
+        setOpen(!!anchorEl)
+    }, [anchorEl])
 
     const handleDelete = () => {
-        setAnchorEl(null)
+        setAnchorEl(null);
+        dispatch(removeTask(task.id))
     }
 
     return (
-        <ListItem secondaryAction={
-            <IconButton edge="end" aria-label="delete" onClick={toggleMenu}>
-                <MoreVertIcon/>
-            </IconButton>
-        }>
+        <ListItem onClick={toggleTaskResolved}
+                  secondaryAction={
+                      <IconButton edge="end" aria-label="delete" onClick={toggleMenu}>
+                          <MoreVertIcon/>
+                      </IconButton>
+                  }>
             <Menu open={open}
-                anchorEl={anchorEl}
+                  anchorEl={anchorEl}
             >
                 <MenuItem onClick={handleDelete}>Delete</MenuItem>
             </Menu>
@@ -29,10 +51,11 @@ export default function TodoItem({title}) {
                     edge="start"
                     tabIndex={-1}
                     disableRipple
+                    checked={task.completed}
                 />
             </ListItemIcon>
 
-            <ListItemText primary={title}/>
+            <ListItemText primary={task.completed ? <s>{task.title}</s> : task.title}/>
         </ListItem>
     )
 }

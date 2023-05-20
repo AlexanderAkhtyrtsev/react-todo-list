@@ -4,7 +4,7 @@ import TodoItem from './TodoItem';
 
 export default function TodoList() {
     return (
-        <M.Container>
+        <M.Container maxWidth="sm">
             <h1>To do</h1>
 
             <M.List>

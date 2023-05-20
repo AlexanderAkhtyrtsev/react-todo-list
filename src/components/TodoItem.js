@@ -1,6 +1,6 @@
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import {useEffect, useState} from 'react';
-import {ListItemIcon, Checkbox, IconButton, ListItem, ListItemText, Menu, MenuItem} from '@mui/material';
+import {ListItemIcon, Checkbox, IconButton, ListItem, ListItemText, Menu, MenuItem, Paper} from '@mui/material';
 import {useDispatch} from 'react-redux';
 import {removeTask, toggleTask} from '../store/todoSlice';
 
@@ -34,28 +34,30 @@ export default function TodoItem({task}) {
     }
 
     return (
-        <ListItem onClick={toggleTaskResolved}
-                  secondaryAction={
-                      <IconButton edge="end" aria-label="delete" onClick={toggleMenu}>
-                          <MoreVertIcon/>
-                      </IconButton>
-                  }>
-            <Menu open={open}
-                  anchorEl={anchorEl}
-            >
-                <MenuItem onClick={handleDelete}>Delete</MenuItem>
-            </Menu>
+        <Paper style={{ margin: '1rem 0', cursor: 'pointer' }}>
+            <ListItem onClick={toggleTaskResolved}
+                      secondaryAction={
+                          <IconButton edge="end" aria-label="delete" onClick={toggleMenu}>
+                              <MoreVertIcon/>
+                          </IconButton>
+                      }>
+                <Menu open={open}
+                      anchorEl={anchorEl}
+                >
+                    <MenuItem onClick={handleDelete}>Delete</MenuItem>
+                </Menu>
 
-            <ListItemIcon>
-                <Checkbox
-                    edge="start"
-                    tabIndex={-1}
-                    disableRipple
-                    checked={task.completed}
-                />
-            </ListItemIcon>
+                <ListItemIcon>
+                    <Checkbox
+                        edge="start"
+                        tabIndex={-1}
+                        disableRipple
+                        checked={task.completed}
+                    />
+                </ListItemIcon>
 
-            <ListItemText primary={task.completed ? <s>{task.title}</s> : task.title}/>
-        </ListItem>
+                <ListItemText primary={task.completed ? <s>{task.title}</s> : task.title}/>
+            </ListItem>
+        </Paper>
     )
 }
